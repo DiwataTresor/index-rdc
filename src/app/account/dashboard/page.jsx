@@ -6,7 +6,7 @@ import {Divider as dv} from "antd"
 import Link from "next/link"
 import {Card,CardBody, CardFooter,Button,Switch, Image,Divider} from "@nextui-org/react"
 import NavigationComponent from "@/app/components/NavigationComponent"
-import {Delete} from "@/app/components/icons/delete";
+import {Delete} from "@/app/components/icons/Delete";
 import {getData} from "@/app/fcts/helper"
 import moment from "moment"
 import {toast,Toaster} from "sonner"
