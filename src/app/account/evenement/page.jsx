@@ -27,7 +27,12 @@ const page=()=>{
             okText:"Enregistrer",
             cancelText:"Annuler",
             onOk:()=>{
-                let pr=JSON.parse(localStorage.getItem('profil'));
+                try
+                {
+                    let pr=localStorage.getItem('profil')?JSON.parse(localStorage.getItem('profil')):null;
+                }catch(e) {
+                    let pr={}
+                }
                 let fichier=document.querySelector("#img");
                 const formData = new FormData();
                 formData.append("add","evenement");

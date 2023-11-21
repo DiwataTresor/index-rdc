@@ -63,9 +63,14 @@ const page=()=>{
     const [profil,setProfil]=useState([]);
     const router=useRouter();
     useEffect(()=>{
-        getData("propreProfil",{"id":JSON.parse(localStorage.getItem("profil")).id}).then(r=>{
+        try {
+        getData("propreProfil",
+                {"id":localStorage.getItem("profil")?JSON.parse(localStorage.getItem("profil")).id: null})
+            .then(r=>{
             setProfil(r.data);
         })
+        }catch(e){
+        }
     },[]);
 
    

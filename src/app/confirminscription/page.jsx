@@ -7,10 +7,16 @@ import Link from "next/link"
 const page=()=>{
     const router=useRouter();
     // const {nom,emailAdresse}=JSON.parse(localStorage.getItem("profil")?localStorage.getItem("profil") : "[{'nom':'','emailAdresse':''}]")[0];
-    const {nom,emailAdresse}=localStorage.getItem("profil")==null?{nom:'',emailAdresse:""}:JSON.parse(localStorage.getItem("profil"));
+    try {
+        const {nom,emailAdresse}=localStorage.getItem("profil")?JSON.parse(localStorage.getItem("profil")):{nom:'',emailAdresse:""};
+    } catch (error) {
+        const nom="";
+        const emailAdresse="";
+
+    }
     const message=`${nom?.toUpperCase()} votre inscription s'est bien faite`;
     useEffect(()=>{
-        localStorage.getItem("profil")==null && router.push("/home");
+        localStorage.getItem("profil") && router.push("/home");
     },[])
     return(
         <div className="bg-white pb-6">

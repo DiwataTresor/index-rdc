@@ -123,7 +123,12 @@ const page=()=>{
 
 
     const getMessages=()=>{
-        let profil=JSON.parse(localStorage.getItem("profil"));
+        try
+        {
+            let profil=localStorage.getItem("profil")?JSON.parse(localStorage.getItem("profil")):null;
+        }catch(e){
+            let profil={}
+        }
         getData("messageUser&id="+profil?.id)
       .then(r=>{
         // setData(r.msgRecus);

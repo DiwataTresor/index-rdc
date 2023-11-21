@@ -429,7 +429,7 @@ const Header = () => {
               {/* <div className="bg-orange-500 w-[7px] h-[70px]">&nbsp;</div> */}
               <Select name="secteur" label="Secteur d'activité" size="sm">
                 <SelectItem key="*" value="*">Tous</SelectItem>
-                {secteurs.sort((a, b) => { return a.secteur > b.secteur })?.map(s => { return (<SelectItem key={s.id} value={s.id}>{s.secteur}</SelectItem>) })}
+                {secteurs?.sort((a, b) => { return a.secteur > b.secteur })?.map(s => { return (<SelectItem key={s.id} value={s.id}>{s.secteur}</SelectItem>) })}
               </Select>
               <Button type="submit" color="success" size={"lg"} radius="md" className="text-white">
                 Trouver

@@ -46,7 +46,12 @@ const page=()=>{
         reader.readAsDataURL(file);
     }
     const saveLogo=(e)=>{
-        let pr=JSON.parse(localStorage.getItem('profil'));
+        try
+        {
+            let pr=localStorage.getItem('profil')?JSON.parse(localStorage.getItem('profil')):null;
+        }catch(e) {
+            let pr={}
+        }
         let fichier=document.querySelector("#logo");
         const formData = new FormData();
         formData.append("add","logo");

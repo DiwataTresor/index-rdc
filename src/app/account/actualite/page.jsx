@@ -18,10 +18,16 @@ const page=()=>{
     const [actusLoading,setActusLoading]=useState(true);
     const [actus,setActus]=useState([]);
     const [api, contextHolder] = notification.useNotification();
+    const [pr,setPr]=useState({});
    
     const handleSubmit=(e)=>{
         e.preventDefault();
-        let pr=JSON.parse(localStorage.getItem('profil'));
+        try
+        {
+            let pr=localStorage.getItem('profil')?JSON.parse(localStorage.getItem('profil')):null;
+        }catch(e) {
+            let pr={};
+        }
         let fichier=document.querySelector("#img");
         const formData = new FormData();
         formData.append("add","actualite");
@@ -99,6 +105,7 @@ const page=()=>{
         })
     }
     useEffect(()=>{
+        setPr(JSON.parse(localStorage.getItem('profil')));
         getActus();
     },[])
 
