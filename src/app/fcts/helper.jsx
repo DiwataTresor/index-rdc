@@ -1,4 +1,6 @@
 "use client"
+
+import useLocalStorage from "@/hooks/useLocalStorage";
 export const BACKEND_URL="http://localhost/root/backend-annuaire-pmes/";
 export const API_URL=BACKEND_URL+"api.php";
 export const isMobile=()=>{
@@ -16,7 +18,9 @@ export const capitalize=(str)=>{
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 export const getData=async(qry,id=null)=>{
-  const profil=window.localStorage.getItem("profil")?JSON.parse(window.localStorage.getItem("profil")) : {};
+  // const profil=window.localStorage.getItem("profil")?JSON.parse(window.localStorage.getItem("profil")) : {};
+  // const [_profil,set_profil]=use
+  const profil={id:1};
   let resultat={};
   await fetch(`${API_URL}?qry=${qry}&id=${profil?.id}`).then(r=>r.json()).then(r=>{
     resultat=r;
@@ -26,7 +30,8 @@ export const getData=async(qry,id=null)=>{
   return resultat;
 }
 export const postData=async(qry,data,id=null)=>{
-  const profil=window.localStorage.getItem("profil")?JSON.parse(window.localStorage.getItem("profil")) : {};
+  // const profil=window.localStorage.getItem("profil")?JSON.parse(window.localStorage.getItem("profil")) : {};
+  const profil={id:1};
   let resultat={};
   let form=new FormData();
   form.append("add",qry);
@@ -41,7 +46,8 @@ export const postData=async(qry,data,id=null)=>{
   return resultat;
 }
 export const updateData=async(qry,data,id=null)=>{
-  const profil=window.localStorage.getItem("profil")?JSON.parse(window.localStorage.getItem("profil")) : {};
+  // const profil=window.localStorage.getItem("profil")?JSON.parse(window.localStorage.getItem("profil")) : {};
+  const profil={id:1};
   let resultat={};
   let form=new FormData();
   form.append("update",qry);
@@ -55,7 +61,8 @@ export const updateData=async(qry,data,id=null)=>{
   return resultat;
 }
 export const deleteData=async(qry,data,id=null)=>{
-  const profil=window.localStorage.getItem("profil")?JSON.parse(window.localStorage.getItem("profil")) : {};
+  // const profil=window.localStorage.getItem("profil")?JSON.parse(window.localStorage.getItem("profil")) : {};
+  const profil={id:1};
   let resultat={};
   let form=new FormData();
   form.append("delete",qry);
