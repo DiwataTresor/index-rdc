@@ -9,6 +9,7 @@ import {Delete} from "@/app/components/icons/Delete"
 import Layout from "@/app/components/layouts/LayoutDashboard"
 import MainLayout from "@/app/components/layouts/LayoutDashboardMain"
 import moment from "moment"
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 
 const page=()=>{
@@ -18,6 +19,8 @@ const page=()=>{
     const [actusLoading,setActusLoading]=useState(true);
     const [actus,setActus]=useState([]);
     const [api, contextHolder] = notification.useNotification();
+    const [profil,setProfil]=useLocalStorage("profil","");
+    const [_profil,set_profil]=useState(profil);
    
     const handleSubmit=(e)=>{
         e.preventDefault();
@@ -29,7 +32,7 @@ const page=()=>{
             onOk:()=>{
                 try
                 {
-                    let pr=localStorage.getItem('profil')?JSON.parse(localStorage.getItem('profil')):null;
+                    let pr=_profil;
                 }catch(e) {
                     let pr={}
                 }

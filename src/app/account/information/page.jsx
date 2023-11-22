@@ -9,6 +9,7 @@ import {Upload} from "@/app/components/icons/Upload"
 import LayoutDashboard from "@/app/components/layouts/LayoutDashboard"
 import LayoutDashboardMain from "@/app/components/layouts/LayoutDashboardMain"
 import NextImage from "next/image";
+import useLocalStorage from "@/hooks/useLocalStorage"
 
 
 const page=()=>{
@@ -18,7 +19,8 @@ const page=()=>{
     const [logo,setLogo]=useState("");
     const [associationsaffiliees,setAssociationsAffiliees]=useState(null);
     const [api, contextHolder] = notification.useNotification();
-    const [profil,setProfil]=useState({});
+    const [profil,setProfil]=useLocalStorage("profil","");
+    const [_profil,set_profil]=useState(profil);
     const [values,setValues]=useState({
         nom:"",
         rccm:"",
@@ -48,7 +50,7 @@ const page=()=>{
     const saveLogo=(e)=>{
         try
         {
-            let pr=localStorage.getItem('profil')?JSON.parse(localStorage.getItem('profil')):null;
+            let pr=_profil;
         }catch(e) {
             let pr={}
         }

@@ -16,12 +16,15 @@ import {MailIcon} from "@/app/components/icons/MailIcon"
 import moment from "moment"
 import Link from "next/link"
 import { Toaster,toast } from 'sonner';
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 const page=()=>{
     const [msgNL,setMsgNL]=useState(0);
     const [msgArchive,setMsgArchive]=useState(0);
     const [data,setData]=useState([]); 
     const [spinning,setSpinning]=useState(false);
+    const [profil,setProfil]=useLocalStorage("profil","");
+    const [_profil,set_profil]=useState(profil);
     // POUR TABLEAU
     const colones = [
        
@@ -125,7 +128,7 @@ const page=()=>{
     const getMessages=()=>{
         try
         {
-            let profil=localStorage.getItem("profil")?JSON.parse(localStorage.getItem("profil")):null;
+            let profil=_profil;
         }catch(e){
             let profil={}
         }
