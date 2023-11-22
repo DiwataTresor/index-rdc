@@ -13,6 +13,7 @@ import { API_URL } from "@/app/fcts/helper"
 import { useRouter } from 'next/navigation'
 import { getSecteurs, getProvinces } from "@/app/utils/data"
 import { postData, getData } from "@/app/fcts/helper"
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 
 import "@szhsin/react-menu/dist/index.css";
@@ -43,8 +44,13 @@ const Header = () => {
   const [feedBack, setFeedBack] = React.useState("");
   const [secteurs, setSecteurs] = React.useState([]);
   const [provinces, setProvinces] = React.useState([]);
-  const [profil,setProfil] = useState({});
-  const [connected,setConnected]=useState(null);
+  const [profil,setProfil] = useLocalStorage("profil","");
+  const [connected,setConnected]=useLocalStorage("connected","");
+  const [visiteSite,setVisiteSite]=useLocalStorage("visiteSite","");
+  const [store,setStore]=useState({
+    connected: connected,
+    profil:profil
+  });
   const inputStyle =
     "border border-gray-100 rounded-sm h-[35px] py-1 min-w-[280px] px-3";
   const menuItems = [
@@ -78,8 +84,9 @@ const Header = () => {
             message: "Authentification",
             description: "Connexion bien établie"
           });
-          localStorage.setItem("connected", "yes");
-          localStorage.setItem("profil", JSON.stringify(r.profil));
+         
+          setConnected(true);
+          setProfil(r.profil);
           router.push('/account/dashboard', { scroll: false });
           window.location.reload();
 
@@ -109,21 +116,17 @@ const Header = () => {
   }
 
   useEffect(() => {
+   
     getSecteurs().then(r => { setSecteurs(r.data) });
     getProvinces().then(r => { setProvinces(r.data) });
-    setProfil(JSON.parse(localStorage.getItem("profil")) || {});
-    if(localStorage.getItem("connected") && localStorage.getItem("connected") === "yes")
-    {
-      setConnected(true);
-    }else
-    {
-      setConnected(false);
-    }
+    
   }, []);
   useEffect(() => {
-    if (localStorage.getItem("connected") == "yes") {
-      let profil = JSON.parse(localStorage.getItem("profil"));
-      getData("messageUser&id=" + profil?.id)
+    // alert(store.connected);
+    if (store.connected == "true") {
+      setStore({...store, connected:"true"})
+      let _profil = JSON.parse(profil);
+      getData("messageUser&id=" + _profil?.id)
         .then(r => {
           setMsgNL(r?.msgRecus?.filter((m) => { return m.statut == 'NL' })?.length)
         }).catch(err => console.log(err));
@@ -132,9 +135,9 @@ const Header = () => {
 
   // Pour visiteur du site
   useEffect(() => {
-    if (localStorage.getItem("visiteSite")) {
-      if (localStorage.getItem("visiteSite") !== moment().format("YYYY-MM-DD")) {
-        localStorage.setItem('visiteSite', `${moment().format("YYYY-MM-DD")}`);
+    if (visiteSite!=="") {
+      if (setVisiteSite("visiteSite") !== moment().format("YYYY-MM-DD")) {
+        setVisiteSite(`${moment().format("YYYY-MM-DD")}`);
         postData("visiteSite").then(r => {
 
         }).catch(r => {
@@ -142,7 +145,7 @@ const Header = () => {
         })
       }
     } else {
-      localStorage.setItem('visiteSite', `${moment().format("YYYY-MM-DD")}`);
+      setVisiteSite(`${moment().format("YYYY-MM-DD")}`);
       postData("visiteSite").then(r => {
 
       }).catch(r => {
@@ -323,7 +326,7 @@ const Header = () => {
               </NavbarItem>
             </NavbarContent>
             {
-              connected ?
+              store.connected ==true?
                 <NavbarContent as="div" className="items-center" justify="end">
                   <NavbarItem className="hidden lg:flex">
                     <Badge content={msgNL} color="danger">
@@ -344,7 +347,7 @@ const Header = () => {
                       </DropdownTrigger>
                       <DropdownMenu aria-label="Profile Actions" variant="flat">
                         <DropdownItem key="profile" className="h-14 gap-2">
-                          <p className="font-semibold">{profil?.emailAdresse}</p>
+                          <p className="font-semibold">{store.profil?.emailAdresse}</p>
 
                         </DropdownItem>
                         <DropdownItem key="settings">
@@ -365,8 +368,9 @@ const Header = () => {
                                 okText: "Quitter",
                                 cancelText: "Annuler",
                                 onOk: () => {
-                                  localStorage.removeItem("connected");
-                                  localStorage.removeItem("profil");
+                                  window.localStorage.setItem("connected", "false");
+                                  // setConnected("false");
+                                  //setConnected("{}");
                                   // router.push("/home");
                                   let url = window.location.href;
                                   let root = new URL(url).origin;
