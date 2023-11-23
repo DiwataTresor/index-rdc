@@ -7,7 +7,7 @@ import {postData,getData,updateData} from "@/app/fcts/helper"
 import {Modal,Alert,Divider,notification} from "antd"
 import {Delete} from "@/app/components/icons/Delete"
 import Layout from "@/app/components/layouts/LayoutDashboard"
-import MainLayout from "@/app/components/layouts/LayoutDashboardMain"
+import MainLayout from "@/app/components/layouts/LayoutDashboardMain" 
 
 
 const page=()=>{
