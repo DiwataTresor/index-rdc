@@ -1,3 +1,5 @@
 /node_modules
 /.next
-/src/app/account
+
+.DS_Store
+.DS_Store?
