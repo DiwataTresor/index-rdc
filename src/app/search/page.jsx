@@ -11,12 +11,12 @@ const page=()=>{
     const [resultat,setResultat]=useState([]);
     const [searchDone,setSearchDone]=useState("false");
     const [spinning,setSpinning]=useState(true)
-    try
-    {
-        const queryString=window?.location?.search ?? "";
-    }catch (e) {
-        const queryString="";
-    }
+    // try
+    // {
+        const queryString=window?.location?.search || "";
+    // }catch (e) {
+    //     const queryString="";
+    // }
     const urlParams=new URLSearchParams(queryString);
 
     const search=async(lieu=null,secteur=null)=>{

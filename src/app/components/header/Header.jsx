@@ -13,9 +13,6 @@ import { API_URL } from "@/app/fcts/helper"
 import { useRouter } from 'next/navigation'
 import { getSecteurs, getProvinces } from "@/app/utils/data"
 import { postData, getData } from "@/app/fcts/helper"
-import useLocalStorage from "@/hooks/useLocalStorage";
-
-
 import "@szhsin/react-menu/dist/index.css";
 
 import { oldUrl, telephone, email } from "@/app/utils/helper";
@@ -34,6 +31,7 @@ import { MailIcon } from "@/app/components/icons/MailIcon"
 import { LockIcon } from "@/app/components/icons/LockIcon"
 import { Modal as ModalAnt, notification, Alert } from "antd"
 import moment from "moment"
+import Cookies from "js-cookie";
 
 const Header = () => {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -44,9 +42,9 @@ const Header = () => {
   const [feedBack, setFeedBack] = React.useState("");
   const [secteurs, setSecteurs] = React.useState([]);
   const [provinces, setProvinces] = React.useState([]);
-  const [profil,setProfil] = useLocalStorage("profil","");
-  const [connected,setConnected]=useLocalStorage("connected","");
-  const [visiteSite,setVisiteSite]=useLocalStorage("visiteSite","");
+  const [profil,setProfil] = useState(Cookies.get("profil") || null);
+  const [connected,setConnected]=useState(Cookies.get("connected") || null);
+  const [visiteSite,setVisiteSite]=useState("visiteSite","");
   const [store,setStore]=useState({
     connected: connected,
     profil:profil
@@ -85,8 +83,8 @@ const Header = () => {
             description: "Connexion bien établie"
           });
          
-          setConnected(true);
-          setProfil(r.profil);
+          Cookies.set('connected',"true");
+          Cookies.set('profil',JSON.stringify(r.profil));
           router.push('/account/dashboard', { scroll: false });
           window.location.reload();
 
@@ -123,7 +121,7 @@ const Header = () => {
   }, []);
   useEffect(() => {
     // alert(store.connected);
-    if (store.connected == "true") {
+    if (connected === "true") {
       setStore({...store, connected:"true"})
       let _profil = JSON.parse(profil);
       getData("messageUser&id=" + _profil?.id)
@@ -326,7 +324,7 @@ const Header = () => {
               </NavbarItem>
             </NavbarContent>
             {
-              store.connected ==true?
+              connected ==="true" ?
                 <NavbarContent as="div" className="items-center" justify="end">
                   <NavbarItem className="hidden lg:flex">
                     <Badge content={msgNL} color="danger">
@@ -347,7 +345,7 @@ const Header = () => {
                       </DropdownTrigger>
                       <DropdownMenu aria-label="Profile Actions" variant="flat">
                         <DropdownItem key="profile" className="h-14 gap-2">
-                          <p className="font-semibold">{store.profil?.emailAdresse}</p>
+                          <p className="font-semibold">{JSON.parse(profil)?.emailAdresse}</p>
 
                         </DropdownItem>
                         <DropdownItem key="settings">
@@ -368,7 +366,8 @@ const Header = () => {
                                 okText: "Quitter",
                                 cancelText: "Annuler",
                                 onOk: () => {
-                                  window.localStorage.setItem("connected", "false");
+                                  Cookies.remove("profil");
+                                  Cookies.remove("connected");
                                   // setConnected("false");
                                   //setConnected("{}");
                                   // router.push("/home");
